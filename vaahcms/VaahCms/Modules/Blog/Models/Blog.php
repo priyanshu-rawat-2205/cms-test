@@ -756,6 +756,27 @@ class Blog extends VaahModel
          * You should also return relationship from here
          */
 
+        $inputs['name'] = $faker->sentence(3);
+        $inputs['slug'] = Str::slug($inputs['name']);
+        $inputs['description'] = $faker->paragraph(3);
+        $inputs['excerpt'] = $faker->text(120);
+        $inputs['is_active'] = rand(0, 1);
+
+        // ✅ Dynamically fetch random valid IDs
+        $inputs['vh_taxonomy_status_id'] = Taxonomy::getTaxonomyByType('status')->random()->id;
+
+        // dd($inputs['status_id']);
+        $inputs['bl_category_id'] = Category::inRandomOrder()->value('id');
+        $inputs['bl_tag_id'] = Tag::inRandomOrder()->pluck('id')->toArray();
+
+        // SEO Fields
+      
+        $inputs['seo_title'] = $faker->sentence;
+        $inputs['seo_description'] = $faker->text(160);
+        $inputs['seo_metatag'] = $faker->word;
+
+        //---------------------------------------------
+
         if(!$is_response_return){
             return $inputs;
         }

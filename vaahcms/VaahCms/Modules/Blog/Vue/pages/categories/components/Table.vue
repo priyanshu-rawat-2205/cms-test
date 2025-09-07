@@ -41,6 +41,16 @@ const useVaah = vaah();
 
             </Column>
 
+            <Column field="description" header="Description"
+                    class="overflow-wrap-anywhere"
+                    :sortable="true">
+
+                <template #body="prop">
+                    {{prop.data.description}}
+                </template>
+
+            </Column>
+
 
                 <Column field="updated_at" header="Updated"
                         v-if="store.isViewLarge()"
