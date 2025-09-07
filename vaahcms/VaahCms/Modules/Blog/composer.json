@@ -1,0 +1,28 @@
+{
+    "name": "vaahcms/blog",
+    "description": "Create your blogs here",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "Priyanshu",
+            "email": "priyanshu-r001@webreinvent.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VaahCms\\Modules\\Blog\\Providers\\BlogServiceProvider"
+            ],
+            "aliases": {
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "VaahCms\\Modules\\Blog\\": ""
+        }
+    }
+}
