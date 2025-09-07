@@ -4,13 +4,15 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Faker\Factory;
 use WebReinvent\VaahCms\Models\VaahModel;
 use WebReinvent\VaahCms\Traits\CrudWithUuidObservantTrait;
 use WebReinvent\VaahCms\Models\User;
 use WebReinvent\VaahCms\Libraries\VaahSeeder;
 use WebReinvent\VaahCms\Models\Taxonomy;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use WebReinvent\VaahCms\Libraries\VaahMail;
+use VaahCms\Modules\Blog\Mails\BlogCreatedMail;
 
 class Blog extends VaahModel
 {
@@ -210,6 +212,9 @@ class Blog extends VaahModel
         if (!$validation['success']) {
             return $validation;
         }
+        $super_admin = User::whereHas('roles', function($role){
+            $role->where('name','Super Administrator');
+        })->first();
 
         // dd($inputs['bl_tag_id']);
 
@@ -246,6 +251,8 @@ class Blog extends VaahModel
         ]);
 
         $item->tags()->attach($inputs['bl_tag_id']); // Attach Tags
+
+        VaahMail::addInQueue(new BlogCreatedMail($item, $super_admin),$super_admin->email); //Send Email to Super Admin
 
         $response = self::getItem($item->id);
         $response['messages'][] = trans("vaahcms-general.saved_successfully");
@@ -690,6 +697,14 @@ class Blog extends VaahModel
         $rules = array(
             'name' => 'required|max:150',
             'slug' => 'required|max:150',
+            'description' => 'required|max:150',
+            'excerpt' => 'required|max:150',
+            'vh_taxonomy_status_id' => 'required',
+            'bl_category_id' => 'required',
+            'bl_tag_id' => 'required',
+            'seo_title' => 'required',
+            'seo_description' => 'required',
+            'seo_metatag' => 'required'
         );
 
         $validator = \Validator::make($inputs, $rules);
@@ -758,17 +773,24 @@ class Blog extends VaahModel
 
         $inputs['name'] = $faker->sentence(3);
         $inputs['slug'] = Str::slug($inputs['name']);
-        $inputs['description'] = $faker->paragraph(3);
+        $inputs['description'] = $faker->paragraph(2);
         $inputs['excerpt'] = $faker->text(120);
-        $inputs['is_active'] = rand(0, 1);
+        $inputs['is_active'] = 1;
 
         // ✅ Dynamically fetch random valid IDs
         $inputs['vh_taxonomy_status_id'] = Taxonomy::getTaxonomyByType('status')->random()->id;
 
         // dd($inputs['status_id']);
         $inputs['bl_category_id'] = Category::inRandomOrder()->value('id');
-        $inputs['bl_tag_id'] = Tag::inRandomOrder()->pluck('id')->toArray();
+        $totalTags = Tag::count();
 
+        // pick a random n between 1 and totalTags
+        $n = rand(1, $totalTags);
+
+        $inputs['bl_tag_id'] = Tag::inRandomOrder()
+            ->take($n)
+            ->pluck('id')
+            ->toArray();
         // SEO Fields
       
         $inputs['seo_title'] = $faker->sentence;

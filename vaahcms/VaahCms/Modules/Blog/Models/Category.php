@@ -618,7 +618,11 @@ class Category extends VaahModel
 
         $rules = array(
             'name' => 'required|max:150',
+            'description' => 'required|max:150',
             'slug' => 'required|max:150',
+            'seo_title' => 'required',
+            'seo_description' => 'required',
+            'seo_metatag' => 'required'
         );
 
         $validator = \Validator::make($inputs, $rules);
@@ -684,6 +688,17 @@ class Category extends VaahModel
          * You can override the filled variables below this line.
          * You should also return relationship from here
          */
+
+        $inputs['name'] = $faker->sentence(3);
+        $inputs['slug'] = Str::slug($inputs['name']);
+        $inputs['description'] = $faker->paragraph(3);
+        $inputs['is_active'] = 1;
+
+        // SEO Fields
+      
+        $inputs['seo_title'] = $faker->sentence;
+        $inputs['seo_description'] = $faker->text(160);
+        $inputs['seo_metatag'] = $faker->word;
 
         if(!$is_response_return){
             return $inputs;

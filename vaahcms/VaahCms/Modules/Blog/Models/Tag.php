@@ -639,6 +639,10 @@ class Tag extends VaahModel
          * You should also return relationship from here
          */
 
+        $inputs['name'] = $faker->sentence(3);
+        $inputs['slug'] = Str::slug($inputs['name']);
+        $inputs['is_active'] = 1;
+
         if(!$is_response_return){
             return $inputs;
         }
