@@ -8,7 +8,7 @@
 @section('vaahcms_extend_backend_js')
 
     @if(env('THEME_BLOG_ENV') == 'develop')
-        <script src="http://localhost:8995/blog/assets/build/app.js" defer></script>
+        <script src="http://localhost:8476/blog/assets/build/app.js" defer></script>
     @else
         <script src="{{vh_theme_assets_url("Blog", "build/app.js")}}"></script>
     @endif

@@ -773,7 +773,7 @@ class Blog extends VaahModel
 
         $inputs['name'] = $faker->sentence(3);
         $inputs['slug'] = Str::slug($inputs['name']);
-        $inputs['description'] = $faker->paragraph(2);
+        $inputs['description'] = $faker->paragraph(1);
         $inputs['excerpt'] = $faker->text(120);
         $inputs['is_active'] = 1;
 

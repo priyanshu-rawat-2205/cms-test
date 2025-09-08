@@ -73,19 +73,47 @@
 
             <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($blogs as $blog)
+                    <a href="{{ route('vh.frontend.blog.detail', $blog->slug) }}">
                     <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition">
                         <div class="flex flex-wrap gap-2 mb-2 text-xs">
-                            <span class="bg-indigo-500 text-black px-2 py-0.5 rounded-full">{{ $blog->category->name ?? 'Uncategorized' }}</span>
-                            @foreach($blog->tags as $tag)
-                                <span class="bg-gray-700 text-gray-300 px-2 py-0.5 rounded-full">{{ $tag->name }}</span>
-                            @endforeach
-                        </div>
-                        <a href="{{ route('vh.frontend.blog.detail', $blog->slug) }}" class="text-lg font-semibold hover:text-indigo-400 transition block mb-2">
+                        <!-- Category -->
+                        <span class="bg-indigo-500 text-black px-2 py-0.5 rounded-full">
+                            {{ $blog->category->name ?? 'Uncategorized' }}
+                        </span>
+
+                        <!-- Tags -->
+                        @php
+                            $tags = $blog->tags;
+                            $shownTags = $tags->take(2);
+                            $hiddenTags = $tags->skip(2);
+                        @endphp
+
+                        @foreach($shownTags as $tag)
+                            <span class="bg-gray-700 text-gray-300 px-2 py-0.5 rounded-full">{{ $tag->name }}</span>
+                        @endforeach
+
+                        @if($hiddenTags->count() > 0)
+                            <!-- "+n more" chip -->
+                            <div class="relative group">
+                                <span class="cursor-pointer bg-gray-600 text-gray-200 px-2 py-0.5 rounded-full">
+                                    +{{ $hiddenTags->count() }} more
+                                </span>
+                                <!-- Tooltip for hidden tags -->
+                                <div class="absolute hidden group-hover:block bg-gray-800 border border-gray-700 text-gray-300 text-xs rounded-md px-3 py-2 mt-1 z-20 max-w-xs">
+                                    @foreach($hiddenTags as $tag)
+                                        <span class="inline-block bg-gray-700 text-gray-300 px-2 py-0.5 rounded-full mr-1 mb-1">{{ $tag->name }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                        <span class="text-lg font-semibold hover:text-indigo-400 transition block mb-2">
                             {{ $blog->name }}
-                        </a>
+                        </span>
                         <p class="text-sm text-gray-400 mb-4">{{ Str::limit($blog->content, 100) }}</p>
                         <div class="text-xs text-gray-500 text-right">{{ \Carbon\Carbon::parse($blog->created_at)->format('F j, Y') }}</div>
                     </div>
+                    </a>
                 @empty
                     <div class="col-span-full text-center text-gray-400 py-8">No blogs found. Adjust your filters.</div>
                 @endforelse

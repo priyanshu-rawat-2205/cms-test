@@ -52,7 +52,7 @@ if (mix.inProduction()) {
 mix.options({
     hmrOptions: {
         host: 'localhost',
-        port: 8995,
+        port: 8476,
     },
 });
 

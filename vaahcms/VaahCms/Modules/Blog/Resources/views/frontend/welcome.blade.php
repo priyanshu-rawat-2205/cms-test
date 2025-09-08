@@ -13,18 +13,18 @@
 @endsection
 
 @section('content')
-
 <div class="container has-text-centered mt-6">
 
         <div class="notification is-link is-light">
-            This is the home page when marked as home from the CMS menu
+            This page should contain welcome message which does not require any database to run.
+            You can write theme setup information.
         </div>
 
         <section class="hero">
             <div class="hero-body">
                 <p class="title">Blog</p>
 
-                <p class="subtitle">Home Page</p>
+                <p class="subtitle">Welcome Page.</p>
 
             </div>
         </section>

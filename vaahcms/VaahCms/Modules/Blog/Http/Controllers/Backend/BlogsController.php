@@ -35,6 +35,10 @@ class BlogsController extends Controller
             $data['vh_taxonomy_status'] = Taxonomy::getTaxonomyByType('status');
             $data['bl_category'] = Category::all();
             $data['bl_tags'] = Tag::all();
+            $data['blogs'] = Blog::all();
+            $data['published_blogs'] = Blog::whereHas('status', function($query) {
+                $query->where('name', 'Published');
+            })->get();
 
             $data['actions'] = [];
 

@@ -5,21 +5,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class BlogCreatedMail extends Mailable {
+class WelcomeSubscriberMail extends Mailable {
 
     use Queueable, SerializesModels;
-    public $super_admin;
-    public $item;
-
+    public $email;
+    
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($item, $super_admin)
+    public function __construct($email)
     {
-        $this->super_admin = $super_admin->name;
-        $this->item = $item;
+        $this->email = $email;
     }
 
     /**
@@ -29,7 +27,7 @@ class BlogCreatedMail extends Mailable {
      */
     public function build()
     {
-        return $this->view('blog::emails.blogcreated');
+        return $this->view('blog::emails.welcomesubscriber');
     }
 
 }

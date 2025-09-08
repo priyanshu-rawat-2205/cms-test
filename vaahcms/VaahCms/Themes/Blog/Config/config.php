@@ -2,11 +2,11 @@
 
 return [
     "name"=> "Blog",
-    "title"=> "Read Our Blogs",
+    "title"=> "Vaah-Blog",
     "slug"=> "blog",
     "thumbnail"=> "https://img.site/p/300/160",
-    "excerpt"=> "description",
-    "description"=> "description",
+    "excerpt"=> "Get the latest blogs",
+    "description"=> "Get the latest blogs",
     "download_link"=> "",
     "author_name"=> "blog",
     "author_website"=> "https://vaah.dev",

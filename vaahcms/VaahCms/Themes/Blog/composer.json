@@ -1,10 +1,10 @@
 {
     "name": "vaahcms/blog",
-    "description": "description",
+    "description": "Get the latest blogs",
     "version": "0.0.1",
     "authors": [
         {
-            "name": "Priyanshu Rawat",
+            "name": "Priyanshu",
             "email": "priyanshu-r001@webreinvent.com"
         }
     ],

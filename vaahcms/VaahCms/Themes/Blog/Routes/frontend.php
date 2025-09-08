@@ -22,6 +22,8 @@ Route::group(
 
         Route::get( '/', 'FrontendController@index' )
         ->name( 'vh.frontend.blog' );
+        Route::get('/{slug}', 'FrontendController@show')->name('vh.frontend.blog.detail');
+        Route::post('/subscribe-newsletter', 'FrontendController@subscribe')->name('newsletter.subscribe');
 
         //------------------------------------------------
     });

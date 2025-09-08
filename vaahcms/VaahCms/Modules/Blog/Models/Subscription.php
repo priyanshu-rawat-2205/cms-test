@@ -6,13 +6,13 @@ use WebReinvent\VaahCms\Models\VaahModel;
 use WebReinvent\VaahCms\Models\User;
 use WebReinvent\VaahCms\Traits\CrudWithUuidObservantTrait;
 
-class Seo extends VaahModel {
+class Subscription extends VaahModel {
 
 	  use SoftDeletes;
     use CrudWithUuidObservantTrait;
 
     //-------------------------------------------------
-    protected $table = 'bl_seos';
+    protected $table = 'bl_subscriptions';
     //-------------------------------------------------
     protected $dates = [
         'created_at',
@@ -22,9 +22,8 @@ class Seo extends VaahModel {
     //-------------------------------------------------
     protected $fillable = [
         'uuid',
-        'seo_title',
-        'seo_description',
-        'seo_metatag',
+        'name',
+        'email',
         'slug',
         'is_active',
         'created_by',
@@ -35,15 +34,6 @@ class Seo extends VaahModel {
     //-------------------------------------------------
     protected $appends  = [
     ];
-    //-------------------------------------------------
-    // Model Relationships
-    //-------------------------------------------------
-
-    public function seoable()
-    {
-        return $this->morphTo();
-    }
-
     //-------------------------------------------------
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -82,30 +72,30 @@ class Seo extends VaahModel {
                 ->getColumnListing($this->getTable());
         }
 
-    //-------------------------------------------------
-    public function scopeExclude($query, $columns)
-    {
-        return $query->select(array_diff($this->getTableColumns(), $columns));
-    }
-
-    //-------------------------------------------------
-    public function scopeBetweenDates($query, $from, $to)
-    {
-
-        if ($from) {
-            $from = \Carbon::parse($from)
-                ->startOfDay()
-                ->toDateTimeString();
+        //-------------------------------------------------
+        public function scopeExclude($query, $columns)
+        {
+            return $query->select(array_diff($this->getTableColumns(), $columns));
         }
 
-        if ($to) {
-            $to = \Carbon::parse($to)
-                ->endOfDay()
-                ->toDateTimeString();
-        }
+        //-------------------------------------------------
+        public function scopeBetweenDates($query, $from, $to)
+        {
 
-        $query->whereBetween('updated_at', [$from, $to]);
-    }
+            if ($from) {
+                $from = \Carbon::parse($from)
+                    ->startOfDay()
+                    ->toDateTimeString();
+            }
+
+            if ($to) {
+                $to = \Carbon::parse($to)
+                    ->endOfDay()
+                    ->toDateTimeString();
+            }
+
+            $query->whereBetween('updated_at', [$from, $to]);
+        }
 
     //-------------------------------------------------
 

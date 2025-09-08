@@ -80,6 +80,8 @@ export const useBlogStore = defineStore({
              */
             this.route = route;
 
+            // console.log(route)
+
             /**
              * Update with view and list css column number
              */
@@ -212,6 +214,11 @@ export const useBlogStore = defineStore({
             let options = {
                 query: vaah().clone(this.query)
             };
+
+            // added this to reload assets every time form loads
+            this.assets_is_fetching = true;
+            this.getAssets();
+
             await vaah().ajax(
                 this.ajax_url,
                 this.afterGetList,
